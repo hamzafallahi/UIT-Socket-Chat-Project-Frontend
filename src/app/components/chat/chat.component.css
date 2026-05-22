@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  height: 100vh;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.chat-app {
+  display: flex;
+  height: 100vh;
+  background: #f3f3f3;
+}

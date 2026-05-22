@@ -1,0 +1,68 @@
+@if (state.activeConversation()) {
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="avatar small">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId())[0] | uppercase }}</div>
+      <span class="chat-header-name">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId()) }}</span>
+    </div>
+    <div class="call-actions">
+      @if (!showVideo()) {
+        <button class="btn-call" (click)="startCall()" title="Voice Call">📞</button>
+        <button class="btn-call" (click)="startCall()" title="Video Call">📹</button>
+      } @else {
+        <button class="btn-call end" (click)="endVideoCall()" title="End Call">🔴 End</button>
+      }
+    </div>
+  </div>
+
+  <!-- Incoming call banner -->
+  @if (state.incomingCall()) {
+    <div class="incoming-call">
+      <span>📞 {{ state.incomingCall()!.fromDisplayName }} is calling...</span>
+      <div class="incoming-actions">
+        <button class="btn-accept" (click)="handleCallResponse('accept')">Accept</button>
+        <button class="btn-decline" (click)="handleCallResponse('decline')">Decline</button>
+      </div>
+    </div>
+  }
+
+  <!-- Jitsi Video -->
+  @if (showVideo() && jitsiRoom()) {
+    <app-jitsi-room
+      [jitsiUrl]="jitsiRoom()!.jitsiUrl"
+      [roomName]="jitsiRoom()!.roomName"
+      [displayName]="state.currentDisplayName()"
+      [jwt]="jitsiRoom()!.jwt"
+      (hangUp)="endVideoCall()"
+    />
+  }
+
+  <!-- Messages -->
+  <div class="messages-area">
+    @for (msg of state.messages(); track msg.id ?? $index) {
+      <div class="message" [class.own]="msg.senderId === state.currentUserId()">
+        <div class="msg-sender">{{ msg.senderId }}</div>
+        <div class="msg-content">{{ msg.content }}</div>
+        <div class="msg-time">{{ msg.timestamp | date: 'shortTime' }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Input -->
+  <div class="input-bar">
+    <input
+      type="text"
+      [(ngModel)]="newMessage"
+      (keyup.enter)="send()"
+      placeholder="Write a message..."
+      class="msg-input"
+    />
+    <button class="btn-send" (click)="send()">Send</button>
+  </div>
+} @else {
+  <div class="no-chat">
+    <div class="no-chat-icon">💬</div>
+    <h3>Select a conversation</h3>
+    <p>Pick a chat from the sidebar or search for a user to start messaging.</p>
+  </div>
+}

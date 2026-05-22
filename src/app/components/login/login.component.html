@@ -1,0 +1,59 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>UITProject</h1>
+      <p>{{ isRegister() ? 'Create an account' : 'Sign in to start chatting' }}</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      @if (error()) {
+        <div class="error-msg">{{ error() }}</div>
+      }
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+        />
+      </div>
+
+      @if (isRegister()) {
+        <div class="form-group">
+          <label for="displayName">Display Name</label>
+          <input
+            id="displayName"
+            type="text"
+            [(ngModel)]="displayName"
+            name="displayName"
+            placeholder="Enter your display name"
+          />
+        </div>
+      }
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="loading()">
+        {{ loading() ? (isRegister() ? 'Creating...' : 'Signing in...') : (isRegister() ? 'Register' : 'Sign In') }}
+      </button>
+
+      <p class="toggle-link" (click)="toggleMode()">
+        {{ isRegister() ? 'Already have an account? Sign in' : "Don't have an account? Register" }}
+      </p>
+    </form>
+  </div>
+</div>

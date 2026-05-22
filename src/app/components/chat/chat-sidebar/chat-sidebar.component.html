@@ -1,0 +1,140 @@
+<div class="sidebar">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <h3>Messaging</h3>
+    <button class="btn-logout" (click)="logout()" title="Logout">
+      <svg lucideLogOut></svg>
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="search('user', searchQuery)"
+      placeholder="Search users..."
+      class="search-input"
+    />
+  </div>
+
+  <!-- Search Results Dropdown -->
+  @if (showSearch() && searchResults().length > 0) {
+    <div class="search-results">
+      @for (user of searchResults(); track user.username) {
+        <div class="search-item" (click)="state.createOrSelectPrivateChat(user); searchQuery = ''; searchResults.set([]); showSearch.set(false)">
+          <div class="avatar">{{ user.displayName[0] | uppercase }}</div>
+          <div class="search-info">
+            <span class="search-name">{{ user.displayName }}</span>
+            <span class="search-username">&#64;{{ user.username }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Recent Private Chats -->
+  <div class="section-label">Recent Chats</div>
+  <div class="conv-list">
+    @for (conv of privateChats; track conv.id) {
+      <div
+        class="conv-item"
+        [class.active]="state.activeConversation()?.id === conv.id"
+        (click)="state.selectConversation(conv)"
+      >
+          <div class="avatar">{{ getOtherParticipants(conv, state.currentUserId())[0] | uppercase }}</div>
+          <div class="conv-info">
+            <span class="conv-name">{{ getOtherParticipants(conv, state.currentUserId()) }}</span>
+        </div>
+        @if (state.unreadCounts()[conv.id]) {
+          <span class="badge">{{ state.unreadCounts()[conv.id] }}</span>
+        }
+      </div>
+    }
+    @if (privateChats.length === 0) {
+      <div class="empty-hint">No chats yet</div>
+    }
+  </div>
+
+  <!-- Group Chats -->
+  <div class="section-label-row">
+    <span class="section-label">Group Chats</span>
+    <button class="btn-new-group" (click)="showGroupModal.set(true); groupSearchQuery = ''; groupSearchResults.set([]); selectedGroupMembers.set([])">+ New Group</button>
+  </div>
+  <div class="conv-list">
+    @for (conv of groupChats; track conv.id) {
+      <div
+        class="conv-item"
+        [class.active]="state.activeConversation()?.id === conv.id"
+        (click)="state.selectConversation(conv)"
+      >
+        <div class="avatar group">G</div>
+        <div class="conv-info">
+            <span class="conv-name">{{ getOtherParticipants(conv, state.currentUserId()) }}</span>
+        </div>
+        @if (state.unreadCounts()[conv.id]) {
+          <span class="badge">{{ state.unreadCounts()[conv.id] }}</span>
+        }
+      </div>
+    }
+    @if (groupChats.length === 0) {
+      <div class="empty-hint">No groups yet</div>
+    }
+  </div>
+</div>
+
+<!-- Group Creation Modal -->
+@if (showGroupModal()) {
+  <div class="modal-overlay" (click)="showGroupModal.set(false)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Create Group</h3>
+        <button class="modal-close" (click)="showGroupModal.set(false)">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <input
+          type="text"
+          [(ngModel)]="groupSearchQuery"
+          (input)="search('group', groupSearchQuery)"
+          placeholder="Search users to add..."
+          class="modal-input"
+        />
+
+        @if (groupSearchResults().length > 0) {
+          <div class="modal-results">
+            @for (user of groupSearchResults(); track user.username) {
+              <div class="modal-result-item" (click)="updateGroupMembers(user, 'add')">
+                <div class="avatar small">{{ user.displayName[0] | uppercase }}</div>
+                <span>{{ user.displayName }}</span>
+                <span class="add-icon">+</span>
+              </div>
+            }
+          </div>
+        }
+
+        @if (selectedGroupMembers().length > 0) {
+          <div class="selected-members">
+            <div class="selected-label">Members ({{ selectedGroupMembers().length }})</div>
+            @for (member of selectedGroupMembers(); track member.username) {
+              <div class="selected-chip">
+                <span>{{ member.displayName }}</span>
+                <button class="chip-remove" (click)="updateGroupMembers(member, 'remove')">✕</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn-create-group"
+          [disabled]="selectedGroupMembers().length < 2"
+          (click)="createGroup()"
+        >
+          Create Group ({{ selectedGroupMembers().length + 1 }} members)
+        </button>
+      </div>
+    </div>
+  </div>
+}
