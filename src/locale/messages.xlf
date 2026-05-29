@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="languageSwitcherLabel" datatype="html">
+        <source>Language</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="languageEnglish" datatype="html">
+        <source>English</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="languageFrench" datatype="html">
+        <source>French</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4355884254142643952" datatype="html">
+        <source>Voice Call</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="893073470366630434" datatype="html">
+        <source>Video Call</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3559221308091639293" datatype="html">
+        <source>End Call</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1241348629231510663" datatype="html">
+        <source>End</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6598127201613360327" datatype="html">
+        <source>📞 <x id="INTERPOLATION" equiv-text="{{ state.incomingCall()!.fromDisplayName }}"/> is calling...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8905995985388209337" datatype="html">
+        <source>Accept</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">25,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8116175184239166510" datatype="html">
+        <source>Decline</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4896863464728200563" datatype="html">
+        <source>Write a message...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6490688569532630280" datatype="html">
+        <source>Send</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1175036962268683274" datatype="html">
+        <source>Select a conversation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6170522286916148373" datatype="html">
+        <source>Pick a chat from the sidebar or search for a user to start messaging.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-main/chat-main.component.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2609637210173724919" datatype="html">
+        <source>Messaging</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">4,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3797778920049399855" datatype="html">
+        <source>Logout</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5649701641482919549" datatype="html">
+        <source>Search users...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">16,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4613536632770916260" datatype="html">
+        <source>Recent Chats</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">38,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4891943367356857311" datatype="html">
+        <source>No chats yet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">56,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7737918756653427214" datatype="html">
+        <source>Group Chats</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="819389367493799445" datatype="html">
+        <source>+ New Group</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4222434100764033725" datatype="html">
+        <source>No groups yet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">82,83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4643671691415114219" datatype="html">
+        <source>Create Group</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">92,93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5224999399403272492" datatype="html">
+        <source>Search users to add...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2327306607567983918" datatype="html">
+        <source>Members (<x id="INTERPOLATION" equiv-text="{{ selectedGroupMembers().length }}"/>)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">120,121</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7238954540366635749" datatype="html">
+        <source> Create Group (<x id="INTERPOLATION" equiv-text="{{ selectedGroupMembers().length + 1 }}"/> members) </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/chat/chat-sidebar/chat-sidebar.component.html</context>
+          <context context-type="linenumber">138,139</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2308975396733519902" datatype="html">
+        <source>Create an account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">7,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4469045656226832442" datatype="html">
+        <source>Sign in to start chatting</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5248717555542428023" datatype="html">
+        <source>Username</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4327001039034401261" datatype="html">
+        <source>Enter your username</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3013055597615607317" datatype="html">
+        <source>Display Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">34,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1629559232336253355" datatype="html">
+        <source>Enter your display name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1431416938026210429" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2772023564304193657" datatype="html">
+        <source>Enter your password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4392937809790226797" datatype="html">
+        <source>Creating...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1858953469563036586" datatype="html">
+        <source>Signing in...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3301086086650990787" datatype="html">
+        <source>Register</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="840692109692540367" datatype="html">
+        <source>Sign In</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">70,71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1247374532019146395" datatype="html">
+        <source>Already have an account? Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8571503912582159721" datatype="html">
+        <source>Don&apos;t have an account? Register</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.html</context>
+          <context context-type="linenumber">79,80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginMissingFields" datatype="html">
+        <source>Please fill in all fields</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFailed" datatype="html">
+        <source>Registration failed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginInvalid" datatype="html">
+        <source>Invalid username or password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/login/login.component.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

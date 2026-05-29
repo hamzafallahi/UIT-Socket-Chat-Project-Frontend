@@ -15,6 +15,22 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly baseUrl = 'http://localhost:8082/api/auth';
+  
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getUserId(): string {
+    return localStorage.getItem('userId') ?? '';
+  }
+
+  getDisplayName(): string {
+    return localStorage.getItem('displayName') ?? '';
+  }
+
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
 
   isLoggedIn = signal(this.hasToken());
 
@@ -51,19 +67,5 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
 
-  getUserId(): string {
-    return localStorage.getItem('userId') ?? '';
-  }
-
-  getDisplayName(): string {
-    return localStorage.getItem('displayName') ?? '';
-  }
-
-  private hasToken(): boolean {
-    return !!localStorage.getItem('token');
-  }
 }

@@ -7,10 +7,12 @@
     </div>
     <div class="call-actions">
       @if (!showVideo()) {
-        <button class="btn-call" (click)="startCall()" title="Voice Call">📞</button>
-        <button class="btn-call" (click)="startCall()" title="Video Call">📹</button>
+        <button class="btn-call" (click)="startCall()" title="Voice Call" i18n-title>📞</button>
+        <button class="btn-call" (click)="startCall()" title="Video Call" i18n-title>📹</button>
       } @else {
-        <button class="btn-call end" (click)="endVideoCall()" title="End Call">🔴 End</button>
+        <button class="btn-call end" (click)="endVideoCall()" title="End Call" i18n-title>
+          🔴 <span i18n>End</span>
+        </button>
       }
     </div>
   </div>
@@ -18,10 +20,10 @@
   <!-- Incoming call banner -->
   @if (state.incomingCall()) {
     <div class="incoming-call">
-      <span>📞 {{ state.incomingCall()!.fromDisplayName }} is calling...</span>
+      <span i18n>📞 {{ state.incomingCall()!.fromDisplayName }} is calling...</span>
       <div class="incoming-actions">
-        <button class="btn-accept" (click)="handleCallResponse('accept')">Accept</button>
-        <button class="btn-decline" (click)="handleCallResponse('decline')">Decline</button>
+        <button class="btn-accept" (click)="handleCallResponse('accept')" i18n>Accept</button>
+        <button class="btn-decline" (click)="handleCallResponse('decline')" i18n>Decline</button>
       </div>
     </div>
   }
@@ -55,14 +57,15 @@
       [(ngModel)]="newMessage"
       (keyup.enter)="send()"
       placeholder="Write a message..."
+      i18n-placeholder
       class="msg-input"
     />
-    <button class="btn-send" (click)="send()">Send</button>
+    <button class="btn-send" (click)="send()" i18n>Send</button>
   </div>
 } @else {
   <div class="no-chat">
     <div class="no-chat-icon">💬</div>
-    <h3>Select a conversation</h3>
-    <p>Pick a chat from the sidebar or search for a user to start messaging.</p>
+    <h3 i18n>Select a conversation</h3>
+    <p i18n>Pick a chat from the sidebar or search for a user to start messaging.</p>
   </div>
 }
