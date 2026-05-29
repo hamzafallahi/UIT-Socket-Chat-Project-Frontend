@@ -29,7 +29,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (!this.username || !this.password) {
-      this.error.set($localize`:@@loginMissingFields:Please fill in all fields`);
+      this.error.set('Please fill in all fields');
       return;
     }
 
@@ -47,11 +47,7 @@ export class LoginComponent {
       },
       error: () => {
         this.loading.set(false);
-        this.error.set(
-          this.isRegister()
-            ? $localize`:@@registerFailed:Registration failed`
-            : $localize`:@@loginInvalid:Invalid username or password`
-        );
+        this.error.set(this.isRegister() ? 'Registration failed' : 'Invalid username or password');
       },
     });
   }

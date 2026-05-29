@@ -11,7 +11,7 @@
       "i18n": {
         "sourceLocale" :"en-US",
         "locales": {
-          "fr-FR": "src/locale/messages.fr.xlf"}
+          "fr": "src/locale/messages.fr.xlf"}
       },
       "projectType": "application",
       "schematics": {},
@@ -22,7 +22,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "localize": ["fr-FR"],
+            "localize": true,
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
