@@ -152,6 +152,32 @@
   display: block;
 }
 
+.conv-status {
+  font-size: 0.72rem;
+  color: #888;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.conv-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c0c0c0;
+  display: inline-block;
+}
+
+.conv-status.online {
+  color: #2e7d32;
+}
+
+.conv-status.online::before {
+  background: #2ecc71;
+}
+
 .empty-hint {
   padding: 10px 20px;
   font-size: 0.82rem;

@@ -3,7 +3,14 @@
   <div class="chat-header">
     <div class="chat-header-info">
       <div class="avatar small">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId())[0] | uppercase }}</div>
-      <span class="chat-header-name">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId()) }}</span>
+      <div class="chat-header-text">
+        <span class="chat-header-name">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId()) }}</span>
+        @if (getOtherUserId(); as otherUserId) {
+          <span class="chat-header-status" [class.online]="state.isOnline(otherUserId)">
+            {{ state.getPresenceLabel(otherUserId) }}
+          </span>
+        }
+      </div>
     </div>
     <div class="call-actions">
       @if (!showVideo()) {

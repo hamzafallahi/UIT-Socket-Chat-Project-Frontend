@@ -13,11 +13,26 @@ export interface ChatMessage {
   status?: string;
 }
 
+export interface PresenceEvent {
+  userId: string;
+  status: 'ONLINE' | 'OFFLINE';
+  lastSeen?: string | null;
+  serverTime?: string | null;
+}
+
+export interface PresenceSnapshot {
+  onlineUsers: string[];
+  lastSeen: Record<string, string | null>;
+  serverTime?: string | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class WebSocketService {
   private client!: Client;
   private messageSubject = new Subject<ChatMessage>();
   private callInviteSubject = new Subject<CallInvite>();
+  private presenceEventSubject = new Subject<PresenceEvent>();
+  private presenceSnapshotSubject = new Subject<PresenceSnapshot>();
   private chatSub?: StompSubscription;
   private globalSubs: StompSubscription[] = [];
   private connected = false;
@@ -25,6 +40,8 @@ export class WebSocketService {
 
   messages$ = this.messageSubject.asObservable();
   callInvites$ = this.callInviteSubject.asObservable();
+  presenceEvents$ = this.presenceEventSubject.asObservable();
+  presenceSnapshot$ = this.presenceSnapshotSubject.asObservable();
 
   // Fires for messages on ANY subscribed conversation (for badges)
   private globalMessageSubject = new Subject<ChatMessage>();
@@ -36,11 +53,20 @@ export class WebSocketService {
     this.client = new Client({
       webSocketFactory: () => new SockJS('http://localhost:8082/ws') as WebSocket,
       reconnectDelay: 5000,
+      connectHeaders: { userId },
       onConnect: () => {
         this.connected = true;
 
         this.client.subscribe(`/topic/call/${userId}`, (msg: IMessage) => {
           this.callInviteSubject.next(JSON.parse(msg.body));
+        });
+
+        this.client.subscribe('/topic/presence', (msg: IMessage) => {
+          this.presenceEventSubject.next(JSON.parse(msg.body));
+        });
+
+        this.client.subscribe(`/topic/presence/${userId}`, (msg: IMessage) => {
+          this.presenceSnapshotSubject.next(JSON.parse(msg.body));
         });
 
         this.onConnectCallback?.();

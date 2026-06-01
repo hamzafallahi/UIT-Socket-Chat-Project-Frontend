@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatApiService, UserResult, ConversationType } from '../../../services/chat-api.service';
+import { ChatApiService, UserResult, ConversationType, Conversation } from '../../../services/chat-api.service';
 import { ChatStateService } from '../../../services/chat-state.service';
 import { WebSocketService } from '../../../services/websocket.service';
 import { AuthService } from '../../../services/auth.service';
-import { getOtherParticipants } from '../../../utils/chat.utils';
+import { getOtherParticipantId, getOtherParticipants } from '../../../utils/chat.utils';
 import { LucideLogOut } from '@lucide/angular';
 
 
@@ -22,6 +22,7 @@ export class ChatSidebarComponent {
   private readonly wsService = inject(WebSocketService);
   private readonly chatApi = inject(ChatApiService);
   readonly getOtherParticipants = getOtherParticipants;
+  readonly getOtherParticipantId = getOtherParticipantId;
   readonly currentUserId = this.state.currentUserId();
   readonly currentDisplayName = this.state.currentDisplayName();
 
@@ -91,5 +92,15 @@ export class ChatSidebarComponent {
   logout(): void {
     this.wsService.disconnect();
     this.authService.logout();
+  }
+
+  isOnlineForConversation(conv: Conversation): boolean {
+    const otherId = getOtherParticipantId(conv, this.state.currentUserId());
+    return this.state.isOnline(otherId);
+  }
+
+  getPresenceLabelForConversation(conv: Conversation): string {
+    const otherId = getOtherParticipantId(conv, this.state.currentUserId());
+    return this.state.getPresenceLabel(otherId);
   }
 }

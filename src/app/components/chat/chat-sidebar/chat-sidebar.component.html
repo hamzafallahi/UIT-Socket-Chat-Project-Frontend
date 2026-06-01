@@ -45,6 +45,9 @@
           <div class="avatar">{{ getOtherParticipants(conv, state.currentUserId())[0] | uppercase }}</div>
           <div class="conv-info">
             <span class="conv-name">{{ getOtherParticipants(conv, state.currentUserId()) }}</span>
+            <span class="conv-status" [class.online]="isOnlineForConversation(conv)">
+              {{ getPresenceLabelForConversation(conv) }}
+            </span>
         </div>
         @if (state.unreadCounts()[conv.id]) {
           <span class="badge">{{ state.unreadCounts()[conv.id] }}</span>

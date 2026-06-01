@@ -21,10 +21,41 @@
   gap: 10px;
 }
 
+.chat-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .chat-header-name {
   font-size: 1rem;
   font-weight: 700;
   color: #333;
+}
+
+.chat-header-status {
+  font-size: 0.78rem;
+  color: #888;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-header-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c0c0c0;
+  display: inline-block;
+}
+
+.chat-header-status.online {
+  color: #2e7d32;
+}
+
+.chat-header-status.online::before {
+  background: #2ecc71;
 }
 
 /* Avatar */

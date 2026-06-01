@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../../../services/websocket.service';
 import { JitsiService, JitsiRoom } from '../../../services/jitsi.service';
 import { ChatStateService } from '../../../services/chat-state.service';
-import { getOtherParticipants } from '../../../utils/chat.utils';
+import { getOtherParticipantId, getOtherParticipants } from '../../../utils/chat.utils';
 import { JitsiRoomComponent } from '../../jitsi-room/jitsi-room.component';
 
 @Component({
@@ -19,6 +19,7 @@ export class ChatMainComponent implements OnDestroy {
   private readonly wsService = inject(WebSocketService);
   private readonly jitsiService = inject(JitsiService);
   readonly getOtherParticipants = getOtherParticipants;
+  readonly getOtherParticipantId = getOtherParticipantId;
 
   newMessage = '';
   jitsiRoom = signal<JitsiRoom | null>(null);
@@ -91,5 +92,11 @@ export class ChatMainComponent implements OnDestroy {
     osc.connect(gain); gain.connect(ctx.destination);
     osc.start(); osc.stop(ctx.currentTime + 0.2);
     osc.onended = () => ctx.close().catch(() => {});
+  }
+
+  getOtherUserId(): string | null {
+    const conv = this.state.activeConversation();
+    if (!conv) return null;
+    return getOtherParticipantId(conv, this.state.currentUserId());
   }
 }
