@@ -8,11 +8,6 @@
   "newProjectRoot": "projects",
   "projects": {
     "uitprojectfront": {
-      "i18n": {
-        "sourceLocale" :"en-US",
-        "locales": {
-          "fr": "src/locale/messages.fr.xlf"}
-      },
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -22,7 +17,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "localize": true,
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
