@@ -56,7 +56,7 @@
 
           <div class="msg-content">
             @if (msg.messageType === 'IMAGE') {
-              <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image" />
+              <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image clickable-image" (click)="openImageModal(msg.fileUrl)" /> />
             } @else if (msg.messageType === 'FILE') {
               <a [href]="msg.fileUrl" target="_blank" class="chat-file-link">📁 Download Attachment</a>
             } @else {
@@ -123,6 +123,15 @@
       <button class="btn-send" (click)="send()" [disabled]="isUploading() || (!newMessage.trim() && stagedFiles().length === 0)">Send</button>
     </div>
   </div>
+
+  @if (selectedModalImage()) {
+    <div class="image-modal-overlay" (click)="closeImageModal()">
+      <button class="modal-close-btn" (click)="closeImageModal()">✕</button>
+      <div class="modal-content-wrapper" (click)="$event.stopPropagation()">
+        <img [src]="selectedModalImage()" class="modal-image-view" alt="Expanded display" />
+      </div>
+    </div>
+  }
 } @else {
   <div class="no-chat">
     <div class="no-chat-icon">💬</div>

@@ -30,9 +30,10 @@ export class ChatMainComponent implements OnDestroy {
   readonly state = inject(ChatStateService);
   private readonly wsService = inject(WebSocketService);
   private readonly jitsiService = inject(JitsiService);
-  private readonly http = inject(HttpClient);
+  readonly http = inject(HttpClient);
   readonly getOtherParticipants = getOtherParticipants;
   readonly getOtherParticipantId = getOtherParticipantId;
+  selectedModalImage = signal<string | null>(null);
 
   newMessage = '';
   jitsiRoom = signal<JitsiRoom | null>(null);
@@ -234,5 +235,14 @@ send(): void {
     return getOtherParticipantId(conv, this.state.currentUserId());
   }
   
+  openImageModal(url: string | undefined): void {
+  if (url) {
+    this.selectedModalImage.set(url);
+  }
+  }
+
+  closeImageModal(): void {
+    this.selectedModalImage.set(null);
+  }
 
 }
