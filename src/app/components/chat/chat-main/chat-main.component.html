@@ -49,22 +49,48 @@
     @for (msg of state.messages(); track msg.id ?? $index) {
       <div class="message" [class.own]="msg.senderId === state.currentUserId()">
         <div class="msg-sender">{{ msg.senderId }}</div>
-        <div class="msg-content">{{ msg.content }}</div>
+        
+        <div class="msg-content">
+          @if (msg.messageType === 'IMAGE') {
+            <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image" style="max-width: 200px; border-radius: 8px;" />
+          } @else if (msg.messageType === 'FILE') {
+            <a [href]="msg.fileUrl" target="_blank" class="chat-file-link">📁 Download Attachment</a>
+          } @else {
+            {{ msg.content }}
+          }
+        </div>
+        
         <div class="msg-time">{{ msg.timestamp | date: 'shortTime' }}</div>
       </div>
     }
   </div>
 
-  <!-- Input -->
   <div class="input-bar">
+    <input 
+      type="file" 
+      (change)="onFileSelected($event)" 
+      accept="image/*, .pdf, .doc, .docx, .zip" 
+      #fileInput 
+      style="display: none;"
+    />
+    
+    <button class="btn-attach" (click)="fileInput.click()" [disabled]="isUploading()" title="Attach File">
+      @if (isUploading()) {
+        ⏳
+      } @else {
+        📎
+      }
+    </button>
+
     <input
       type="text"
       [(ngModel)]="newMessage"
       (keyup.enter)="send()"
       placeholder="Write a message..."
       class="msg-input"
+      [disabled]="isUploading()"
     />
-    <button class="btn-send" (click)="send()">Send</button>
+    <button class="btn-send" (click)="send()" [disabled]="isUploading()">Send</button>
   </div>
 } @else {
   <div class="no-chat">

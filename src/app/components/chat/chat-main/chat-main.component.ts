@@ -6,6 +6,7 @@ import { JitsiService, JitsiRoom } from '../../../services/jitsi.service';
 import { ChatStateService } from '../../../services/chat-state.service';
 import { getOtherParticipantId, getOtherParticipants } from '../../../utils/chat.utils';
 import { JitsiRoomComponent } from '../../jitsi-room/jitsi-room.component';
+import { HttpClient } from '@angular/common/http'; 
 
 @Component({
   selector: 'app-chat-main',
@@ -18,12 +19,14 @@ export class ChatMainComponent implements OnDestroy {
   readonly state = inject(ChatStateService);
   private readonly wsService = inject(WebSocketService);
   private readonly jitsiService = inject(JitsiService);
+  private readonly http = inject(HttpClient);
   readonly getOtherParticipants = getOtherParticipants;
   readonly getOtherParticipantId = getOtherParticipantId;
 
   newMessage = '';
   jitsiRoom = signal<JitsiRoom | null>(null);
   showVideo = signal(false);
+  isUploading = signal(false);
   private ringTimer: ReturnType<typeof setInterval> | null = null;
 
   ngOnDestroy(): void {
@@ -98,5 +101,45 @@ export class ChatMainComponent implements OnDestroy {
     const conv = this.state.activeConversation();
     if (!conv) return null;
     return getOtherParticipantId(conv, this.state.currentUserId());
+  }
+  // --- UPLOAD LOGIC ---
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    // 10MB limit (10 * 1024 * 1024 bytes)
+    if (file.size > 10485760) {
+      alert('File is too large! Maximum size is 10MB.');
+      event.target.value = ''; // Reset input
+      return;
+    }
+
+    this.isUploading.set(true);
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'angular_chat_uploads'); 
+
+
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dhyshiau6/upload`;
+
+    this.http.post(cloudinaryUrl, formData).subscribe({
+      next: (response: any) => {
+        this.isUploading.set(false);
+        const fileUrl = response.secure_url;
+        
+        // Determine message type based on MIME type
+        const messageType = file.type.startsWith('image/') ? 'IMAGE' : 'FILE';
+        this.state.sendFileMessage(fileUrl, messageType);
+        
+        event.target.value = ''; // Reset input
+      },
+      error: (err) => {
+        this.isUploading.set(false);
+        console.error('Cloudinary upload failed', err);
+        alert('Failed to upload file. Please try again.');
+        event.target.value = ''; // Reset input
+      }
+    });
   }
 }

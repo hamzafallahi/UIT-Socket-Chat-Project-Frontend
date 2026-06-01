@@ -8,9 +8,11 @@ export interface ChatMessage {
   id?: number;
   conversationId: number;
   senderId: string;
-  content: string;
+  content: string | null;
   timestamp?: string;
   status?: string;
+  fileUrl?: string;
+  messageType?: string;
 }
 
 export interface PresenceEvent {
@@ -115,7 +117,22 @@ export class WebSocketService {
     if (this.client?.connected) {
       this.client.publish({
         destination: '/app/chat.send',
-        body: JSON.stringify({ conversationId, senderId, content }),
+        body: JSON.stringify({ conversationId, senderId, content,  messageType: 'TEXT' }),
+      });
+    }
+  }
+
+  sendFileMessage(conversationId: number, senderId: string, fileUrl: string, messageType: string): void {
+    if (this.client?.connected) {
+      this.client.publish({
+        destination: '/app/chat.send', 
+        body: JSON.stringify({ 
+          conversationId, 
+          senderId, 
+          content: null, 
+          fileUrl, 
+          messageType 
+        }),
       });
     }
   }

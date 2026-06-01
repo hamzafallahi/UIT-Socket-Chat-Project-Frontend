@@ -91,6 +91,14 @@ export class ChatStateService implements OnDestroy {
     if (!conv) return;
     this.wsService.sendMessage(conv.id, this.currentUserId(), content);
   }
+  
+  sendFileMessage(fileUrl: string, messageType: string): void {
+    const conv = this.activeConversation();
+    if (!conv) return;
+    
+    this.wsService.sendFileMessage(conv.id, this.currentUserId(), fileUrl, messageType);
+  }
+
 
   // ── Conversation creation ──
 
