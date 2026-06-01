@@ -69,6 +69,12 @@ export class WebSocketService {
           this.presenceSnapshotSubject.next(JSON.parse(msg.body));
         });
 
+        this.client.publish({
+          destination: '/app/presence.init',
+          headers: { userId },
+          body: '',
+        });
+
         this.onConnectCallback?.();
       },
     });
