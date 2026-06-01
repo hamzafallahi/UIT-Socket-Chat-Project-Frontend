@@ -56,7 +56,7 @@
 
           <div class="msg-content">
             @if (msg.messageType === 'IMAGE') {
-              <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image clickable-image" (click)="openImageModal(msg.fileUrl)" /> />
+              <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image clickable-image" (click)="openImageModal(msg.fileUrl)" />
             } @else if (msg.messageType === 'FILE') {
               <a [href]="msg.fileUrl" target="_blank" class="chat-file-link">📁 Download Attachment</a>
             } @else {
