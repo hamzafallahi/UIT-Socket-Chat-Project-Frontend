@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../../../services/websocket.service';
@@ -7,6 +7,17 @@ import { ChatStateService } from '../../../services/chat-state.service';
 import { getOtherParticipantId, getOtherParticipants } from '../../../utils/chat.utils';
 import { JitsiRoomComponent } from '../../jitsi-room/jitsi-room.component';
 import { HttpClient } from '@angular/common/http'; 
+
+// Interface to manage staging files locally
+interface StagedFile {
+  id: string;
+  file: File;
+  previewUrl: string;      // local blob URL for immediate UI rendering
+  cloudinaryUrl: string | null;
+  isUploading: boolean;
+  type: 'IMAGE' | 'FILE';
+}
+
 
 @Component({
   selector: 'app-chat-main',
@@ -26,18 +37,138 @@ export class ChatMainComponent implements OnDestroy {
   newMessage = '';
   jitsiRoom = signal<JitsiRoom | null>(null);
   showVideo = signal(false);
-  isUploading = signal(false);
+//  isUploading = signal(false);
   private ringTimer: ReturnType<typeof setInterval> | null = null;
+
+  // --- ATTACHMENT SIGNALS ---
+  stagedFiles = signal<StagedFile[]>([]);
+  isDragActive = signal(false);
+
+  // Computed state: Lock input if ANY file is currently uploading to Cloudinary
+  isUploading = computed(() => this.stagedFiles().some(f => f.isUploading));
+
 
   ngOnDestroy(): void {
     this.stopRinging();
   }
 
-  send(): void {
+send(): void {
+    if (!this.state.activeConversation() || this.isUploading()) return;
+
     const content = this.newMessage.trim();
-    if (!content || !this.state.activeConversation()) return;
-    this.state.sendMessage(content);
-    this.newMessage = '';
+    const filesToSend = this.stagedFiles();
+
+    // 1. If there's text, send it
+    if (content) {
+      this.state.sendMessage(content);
+      this.newMessage = '';
+    }
+
+    // 2. Loop through all successfully uploaded files and send them
+    filesToSend.forEach(file => {
+      if (file.cloudinaryUrl) {
+        this.state.sendFileMessage(file.cloudinaryUrl, file.type);
+      }
+    });
+
+    // 3. Clear out the staging array
+    this.stagedFiles.set([]);
+  }
+
+  // --- DRAG AND DROP HANDLERS ---
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragActive.set(true);
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragActive.set(false);
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragActive.set(false);
+
+    if (event.dataTransfer?.files) {
+      this.handleFileSelection(event.dataTransfer.files);
+    }
+  }
+
+  onFileSelected(event: any): void {
+    if (event.target.files) {
+      this.handleFileSelection(event.target.files);
+      event.target.value = ''; // Clear file input element
+    }
+  }
+
+  // --- MULTI-FILE UPLOAD PROCESSOR ---
+  private handleFileSelection(fileList: FileList): void {
+    const filesArray = Array.from(fileList);
+
+    filesArray.forEach(file => {
+      // 10MB individual limit
+      if (file.size > 10485760) {
+        alert(`File "${file.name}" is too large! Max 10MB.`);
+        return;
+      }
+
+      const isImage = file.type.startsWith('image/');
+      
+      const newStagedFile: StagedFile = {
+        id: Math.random().toString(36).substring(2),
+        file: file,
+        previewUrl: isImage ? URL.createObjectURL(file) : '', // Local UI link
+        cloudinaryUrl: null,
+        isUploading: true,
+        type: isImage ? 'IMAGE' : 'FILE'
+      };
+
+      // Add to list immediately for preview rendering
+      this.stagedFiles.update(prev => [...prev, newStagedFile]);
+
+      // Fire off background upload to Cloudinary
+      this.uploadToCloudinary(newStagedFile);
+    });
+  } 
+  
+  // --- UPLOAD LOGIC ---
+  private uploadToCloudinary(stagedFile: StagedFile): void {
+    const formData = new FormData();
+    formData.append('file', stagedFile.file);
+    formData.append('upload_preset', 'angular_chat_uploads'); 
+
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dhyshiau6/upload`;
+
+    fetch(cloudinaryUrl, { method: 'POST', body: formData })
+      .then(res => res.json())
+      .then(data => {
+        this.stagedFiles.update(prev => 
+          prev.map(f => f.id === stagedFile.id 
+            ? { ...f, isUploading: false, cloudinaryUrl: data.secure_url } 
+            : f
+          )
+        );
+      })
+      .catch(err => {
+        console.error('Cloudinary upload failure', err);
+        // Remove failed file from preview list
+        this.removeFile(stagedFile.id);
+        alert(`Failed to upload ${stagedFile.file.name}`);
+      });
+  }
+
+  removeFile(id: string): void {
+    this.stagedFiles.update(prev => {
+      const fileToRemove = prev.find(f => f.id === id);
+      if (fileToRemove?.previewUrl) {
+        URL.revokeObjectURL(fileToRemove.previewUrl); // Prevent memory leaks
+      }
+      return prev.filter(f => f.id !== id);
+    });
   }
 
   startCall(): void {
@@ -102,44 +233,6 @@ export class ChatMainComponent implements OnDestroy {
     if (!conv) return null;
     return getOtherParticipantId(conv, this.state.currentUserId());
   }
-  // --- UPLOAD LOGIC ---
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (!file) return;
+  
 
-    // 10MB limit (10 * 1024 * 1024 bytes)
-    if (file.size > 10485760) {
-      alert('File is too large! Maximum size is 10MB.');
-      event.target.value = ''; // Reset input
-      return;
-    }
-
-    this.isUploading.set(true);
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'angular_chat_uploads'); 
-
-
-    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dhyshiau6/upload`;
-
-    this.http.post(cloudinaryUrl, formData).subscribe({
-      next: (response: any) => {
-        this.isUploading.set(false);
-        const fileUrl = response.secure_url;
-        
-        // Determine message type based on MIME type
-        const messageType = file.type.startsWith('image/') ? 'IMAGE' : 'FILE';
-        this.state.sendFileMessage(fileUrl, messageType);
-        
-        event.target.value = ''; // Reset input
-      },
-      error: (err) => {
-        this.isUploading.set(false);
-        console.error('Cloudinary upload failed', err);
-        alert('Failed to upload file. Please try again.');
-        event.target.value = ''; // Reset input
-      }
-    });
-  }
 }

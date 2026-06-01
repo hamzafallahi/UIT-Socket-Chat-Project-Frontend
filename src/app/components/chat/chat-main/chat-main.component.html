@@ -1,96 +1,127 @@
 @if (state.activeConversation()) {
-  <!-- Chat Header -->
-  <div class="chat-header">
-    <div class="chat-header-info">
-      <div class="avatar small">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId())[0] | uppercase }}</div>
-      <div class="chat-header-text">
-        <span class="chat-header-name">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId()) }}</span>
-        @if (getOtherUserId(); as otherUserId) {
-          <span class="chat-header-status" [class.online]="state.isOnline(otherUserId)">
-            {{ state.getPresenceLabel(otherUserId) }}
-          </span>
+  <div class="chat-window-container" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [class.drag-over-active]="isDragActive()">
+    @if (isDragActive()) {
+      <div class="drag-overlay">
+        <div class="drag-overlay-card">📥 Drop files here to upload</div>
+      </div>
+    }
+
+    <!-- Chat Header -->
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="avatar small">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId())[0] | uppercase }}</div>
+        <div class="chat-header-text">
+          <span class="chat-header-name">{{ getOtherParticipants(state.activeConversation()!, state.currentUserId()) }}</span>
+          @if (getOtherUserId(); as otherUserId) {
+            <span class="chat-header-status" [class.online]="state.isOnline(otherUserId)">
+              {{ state.getPresenceLabel(otherUserId) }}
+            </span>
+          }
+        </div>
+      </div>
+      <div class="call-actions">
+        @if (!showVideo()) {
+          <button class="btn-call" (click)="startCall()" title="Voice Call">📞</button>
+          <button class="btn-call" (click)="startCall()" title="Video Call">📹</button>
+        } @else {
+          <button class="btn-call end" (click)="endVideoCall()" title="End Call">🔴 End</button>
         }
       </div>
     </div>
-    <div class="call-actions">
-      @if (!showVideo()) {
-        <button class="btn-call" (click)="startCall()" title="Voice Call">📞</button>
-        <button class="btn-call" (click)="startCall()" title="Video Call">📹</button>
-      } @else {
-        <button class="btn-call end" (click)="endVideoCall()" title="End Call">🔴 End</button>
-      }
-    </div>
-  </div>
-
-  <!-- Incoming call banner -->
-  @if (state.incomingCall()) {
-    <div class="incoming-call">
-      <span>📞 {{ state.incomingCall()!.fromDisplayName }} is calling...</span>
-      <div class="incoming-actions">
-        <button class="btn-accept" (click)="handleCallResponse('accept')">Accept</button>
-        <button class="btn-decline" (click)="handleCallResponse('decline')">Decline</button>
-      </div>
-    </div>
-  }
-
-  <!-- Jitsi Video -->
-  @if (showVideo() && jitsiRoom()) {
-    <app-jitsi-room
-      [jitsiUrl]="jitsiRoom()!.jitsiUrl"
-      [roomName]="jitsiRoom()!.roomName"
-      [displayName]="state.currentDisplayName()"
-      [jwt]="jitsiRoom()!.jwt"
-      (hangUp)="endVideoCall()"
-    />
-  }
-
-  <!-- Messages -->
-  <div class="messages-area">
-    @for (msg of state.messages(); track msg.id ?? $index) {
-      <div class="message" [class.own]="msg.senderId === state.currentUserId()">
-        <div class="msg-sender">{{ msg.senderId }}</div>
-        
-        <div class="msg-content">
-          @if (msg.messageType === 'IMAGE') {
-            <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image" style="max-width: 200px; border-radius: 8px;" />
-          } @else if (msg.messageType === 'FILE') {
-            <a [href]="msg.fileUrl" target="_blank" class="chat-file-link">📁 Download Attachment</a>
-          } @else {
-            {{ msg.content }}
-          }
+    <!-- Incoming call banner -->
+    @if (state.incomingCall()) {
+      <div class="incoming-call">
+        <span>📞 {{ state.incomingCall()!.fromDisplayName }} is calling...</span>
+        <div class="incoming-actions">
+          <button class="btn-accept" (click)="handleCallResponse('accept')">Accept</button>
+          <button class="btn-decline" (click)="handleCallResponse('decline')">Decline</button>
         </div>
-        
-        <div class="msg-time">{{ msg.timestamp | date: 'shortTime' }}</div>
       </div>
     }
-  </div>
+    <!-- Jitsi Video -->
+    @if (showVideo() && jitsiRoom()) {
+      <app-jitsi-room
+        [jitsiUrl]="jitsiRoom()!.jitsiUrl"
+        [roomName]="jitsiRoom()!.roomName"
+        [displayName]="state.currentDisplayName()"
+        [jwt]="jitsiRoom()!.jwt"
+        (hangUp)="endVideoCall()"
+      />
+    }
+    <!-- Messages -->
+    <div class="messages-area">
+      @for (msg of state.messages(); track msg.id ?? $index) {
+        <div class="message" [class.own]="msg.senderId === state.currentUserId()">
+          <div class="msg-sender">{{ msg.senderId }}</div>
 
-  <div class="input-bar">
-    <input 
-      type="file" 
-      (change)="onFileSelected($event)" 
-      accept="image/*, .pdf, .doc, .docx, .zip" 
-      #fileInput 
-      style="display: none;"
-    />
-    
-    <button class="btn-attach" (click)="fileInput.click()" [disabled]="isUploading()" title="Attach File">
-      @if (isUploading()) {
-        ⏳
-      } @else {
-        📎
+          <div class="msg-content">
+            @if (msg.messageType === 'IMAGE') {
+              <img [src]="msg.fileUrl" alt="Attached Image" class="chat-image" />
+            } @else if (msg.messageType === 'FILE') {
+              <a [href]="msg.fileUrl" target="_blank" class="chat-file-link">📁 Download Attachment</a>
+            } @else {
+              {{ msg.content }}
+            }
+          </div>
+
+          <div class="msg-time">{{ msg.timestamp | date: 'shortTime' }}</div>
+        </div>
       }
-    </button>
+    </div>
 
-    <input
-      type="text"
-      [(ngModel)]="newMessage"
-      (keyup.enter)="send()"
-      placeholder="Write a message..."
-      class="msg-input"
-      [disabled]="isUploading()"
-    />
-    <button class="btn-send" (click)="send()" [disabled]="isUploading()">Send</button>
+    @if (stagedFiles().length > 0) {
+      <div class="attachment-preview-bar">
+        @for (file of stagedFiles(); track file.id) {
+          <div class="preview-badge">
+            <button class="btn-remove-preview" (click)="removeFile(file.id)" title="Remove item">✕</button>
+
+            @if (file.type === 'IMAGE') {
+              <img [src]="file.previewUrl" class="img-preview-thumbnail" alt="Preview" />
+            } @else {
+              <div class="file-preview-thumbnail">
+                <span class="file-icon">📄</span>
+                <span class="file-name-text">{{ file.file.name }}</span>
+              </div>
+            }
+
+            @if (file.isUploading) {
+              <div class="preview-spinner-overlay">
+                <div class="spinner-circle"></div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <div class="input-bar">
+      <input
+        type="file"
+        (change)="onFileSelected($event)"
+        accept="image/*, .pdf, .doc, .docx, .zip"
+        #fileInput
+        style="display: none;"
+        multiple
+      />
+
+      <button class="btn-attach" (click)="fileInput.click()" [disabled]="isUploading()" title="Attach Files">
+        @if (isUploading()) {
+          ⏳
+        } @else {
+          📎
+        }
+      </button>
+
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        (keyup.enter)="send()"
+        placeholder="Write a message..."
+        class="msg-input"
+        [disabled]="isUploading()"
+      />
+      <button class="btn-send" (click)="send()" [disabled]="isUploading() || (!newMessage.trim() && stagedFiles().length === 0)">Send</button>
+    </div>
   </div>
 } @else {
   <div class="no-chat">
