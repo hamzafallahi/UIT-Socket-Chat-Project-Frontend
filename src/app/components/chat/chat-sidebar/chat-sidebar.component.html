@@ -81,6 +81,14 @@
       <div class="empty-hint">No groups yet</div>
     }
   </div>
+  <div class="your-profile">
+          <div class="conv-item">
+          <div class="avatar">{{ currentUserId[0] | uppercase }}</div>
+          <div class="conv-info">
+            <span class="conv-name">{{  currentDisplayName }}</span>
+            <span class="conv-username">&#64;{{ currentUserId }}</span>
+        </div>
+  </div>
 </div>
 
 <!-- Group Creation Modal -->

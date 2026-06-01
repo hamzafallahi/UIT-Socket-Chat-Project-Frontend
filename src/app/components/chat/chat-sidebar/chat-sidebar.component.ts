@@ -22,6 +22,8 @@ export class ChatSidebarComponent {
   private readonly wsService = inject(WebSocketService);
   private readonly chatApi = inject(ChatApiService);
   readonly getOtherParticipants = getOtherParticipants;
+  readonly currentUserId = this.state.currentUserId();
+  readonly currentDisplayName = this.state.currentDisplayName();
 
   searchQuery = '';
   searchResults = signal<UserResult[]>([]);

@@ -393,3 +393,16 @@
   color: #999;
   cursor: not-allowed;
 }
+
+
+.conv-username {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+
+
+.your-profile {
+  margin-top: auto;
+  border-top: 1px solid #eee;
+}
