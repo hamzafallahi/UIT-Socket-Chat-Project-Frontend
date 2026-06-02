@@ -5,7 +5,6 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [
-      "@angular/localize"
     ]
   },
   "include": [
