@@ -1,38 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Conversation, ConversationType } from '../models/conversasion.model';
+import { Message } from '../models/message.model';
+import { UserResult } from '../models/user.model';
 
-export enum ConversationType {
-  PRIVATE = 'PRIVATE',
-  GROUP = 'GROUP',
-}
-
-export enum MessageStatus {
-  SENT = 'SENT',
-  DELIVERED = 'DELIVERED',
-  READ = 'READ',
-}
-
-export interface Conversation {
-  id: number;
-  participants: string[];
-  type: ConversationType;
-  createdAt: string;
-}
-
-export interface Message {
-  id: number;
-  conversationId: number;
-  senderId: string;
-  content: string;
-  timestamp: string;
-  status: MessageStatus;
-}
-
-export interface UserResult {
-  username: string;
-  displayName: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class ChatApiService {

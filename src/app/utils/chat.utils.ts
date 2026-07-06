@@ -1,4 +1,4 @@
-import { Conversation, ConversationType } from '../services/chat-api.service';
+import { Conversation, ConversationType } from '../models/conversasion.model';
 
 export function getOtherParticipants(conv: Conversation, currentUserId: string): string {
   if (conv.type !== ConversationType.PRIVATE) return `Group (${conv.participants.length})`;

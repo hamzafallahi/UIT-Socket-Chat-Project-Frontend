@@ -7,16 +7,8 @@ import { ChatStateService } from '../../../services/chat-state.service';
 import { getOtherParticipantId, getOtherParticipants } from '../../../utils/chat.utils';
 import { JitsiRoomComponent } from '../../jitsi-room/jitsi-room.component';
 import { HttpClient } from '@angular/common/http'; 
+import { StagedFile } from '../../../models/file.model';
 
-// Interface to manage staging files locally
-interface StagedFile {
-  id: string;
-  file: File;
-  previewUrl: string;      // local blob URL for immediate UI rendering
-  cloudinaryUrl: string | null;
-  isUploading: boolean;
-  type: 'IMAGE' | 'FILE';
-}
 
 
 @Component({

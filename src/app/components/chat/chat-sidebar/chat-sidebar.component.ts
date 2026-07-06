@@ -1,8 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ChatApiService, UserResult, ConversationType, Conversation } from '../../../services/chat-api.service';
+import { ChatApiService } from '../../../services/chat-api.service';
+import { UserResult } from '../../../models/user.model';
 import { ChatStateService } from '../../../services/chat-state.service';
+import { Conversation, ConversationType} from '../../../models/conversasion.model';
 import { WebSocketService } from '../../../services/websocket.service';
 import { AuthService } from '../../../services/auth.service';
 import { getOtherParticipantId, getOtherParticipants } from '../../../utils/chat.utils';

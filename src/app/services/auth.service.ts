@@ -2,13 +2,9 @@ import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
+import {LoginResponse} from '../models/auth.model';
 
-export interface LoginResponse {
-  token: string;
-  userId: string;
-  displayName: string;
-  role: string;
-}
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

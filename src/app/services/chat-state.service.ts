@@ -1,14 +1,14 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { WebSocketService, ChatMessage, PresenceEvent, PresenceSnapshot } from './websocket.service';
-import { ChatApiService, Conversation, UserResult, ConversationType } from './chat-api.service';
+import { WebSocketService } from './websocket.service';
+import { ChatApiService } from './chat-api.service';
+import {UserResult } from '../models/user.model';
+import {Conversation, ConversationType} from '../models/conversasion.model';
 import { AuthService } from './auth.service';
 import { CallInvite } from '../models/call-invite.model';
+import { ChatMessage } from '../models/chatmessage.model';
+import {PresenceEvent, PresenceSnapshot, PresenceState} from '../models/presence.model';
 
-interface PresenceState {
-  online: boolean;
-  lastSeen: string | null;
-}
 
 @Injectable()
 export class ChatStateService implements OnDestroy {

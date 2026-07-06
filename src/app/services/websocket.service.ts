@@ -3,30 +3,10 @@ import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Subject } from 'rxjs';
 import { CallInvite } from '../models/call-invite.model';
+import { ChatMessage } from '../models/chatmessage.model';
+import { PresenceEvent, PresenceSnapshot } from '../models/presence.model';
 
-export interface ChatMessage {
-  id?: number;
-  conversationId: number;
-  senderId: string;
-  content: string | null;
-  timestamp?: string;
-  status?: string;
-  fileUrl?: string;
-  messageType?: string;
-}
 
-export interface PresenceEvent {
-  userId: string;
-  status: 'ONLINE' | 'OFFLINE';
-  lastSeen?: string | null;
-  serverTime?: string | null;
-}
-
-export interface PresenceSnapshot {
-  onlineUsers: string[];
-  lastSeen: Record<string, string | null>;
-  serverTime?: string | null;
-}
 
 @Injectable({ providedIn: 'root' })
 export class WebSocketService {
